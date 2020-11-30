@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hospital Recommendation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/autocomplete.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/input.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/scrollbar.css') }}">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/getrating.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href={{ url_for('static',filename='styles/imagebanner.css') }}>
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-default" color="clear">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">Hospital Recommendation</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="https://github.com/juntaosh/USHospitalandHotelShowCaseRepo" target="_blank">Github</a></li>
+                <li><a href="https://trello.com/b/0f4K5jkH/project" target="_blank">Trello</a></li>
+                <li>
+                    <a href="https://twitter.com/intent/tweet?text=I%20am%20looking%20at%20the%20{{ hotel_dict['Name'] }}%20at%20Hotel%20Recommendation%20#DSCI551">Tweet
+                        this</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">More
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://juntaosh.github.io/US-hospital-and-Hotel-Recommendation-System/"
+                               target="_blank">WebPage</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="hero-image"
+     style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ imageURL }});">
+    <div class="hero-text">
+        <h2 class="text-center">{{ hotel_dict['Name'] }}</h2>
+        <form action="https://www.booking.com/q={{ hotel_dict['Name'] }}">
+            <button>Book Now!</button>
+        </form>
+    </div>
+</div>
+<div class="mapbox_container">
+    <div id='map2'></div>
+    <div id='info'>
+        <h4 class='info_title'>Hotel Information</h4>
+        <div>
+            <p class='overall_ratings'><strong>Name: </strong>{{ hotel_dict['Name'] }}</p>
+            <p class='overall_ratings'><strong>Rating (out of 5): </strong>{{ new_avg }}</p>
+            <p class='overall_ratings'><strong>Address: </strong> {{ hotel_dict['Address'] }} </p>
+            <p class='overall_ratings'><strong>City: </strong>{{ hotel_dict['City'] }}</p>
+            <p class='overall_ratings'><strong>State: </strong>{{ hotel_dict['State'] }}</p>
+            <p class='overall_ratings'><strong>Zip: </strong>{{ hotel_dict['Zip'] }}</p>
+            <p class='overall_ratings'><strong>Distance to {{ given_hospital }} </strong>{{ hotel_dict['Distance'] }}
+            </p>
+        </div>
+        <br>
+        <h4 class='info_title'>Hotel Type and More</h4>
+        <div class="col-lg-8">
+            <p class='overall_ratings'><strong>Type: </strong>{{ hotel_dict['Type'] }}</p>
+            <a class='overall_ratings' href="https://google.com/search?q= {{ hotel_dict['Name'] }}"><strong>More: </strong></a>
+        </div>
+        <br>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="col-lg-10 col-lg-offset-1 vcenter">
+    <div method='post'>
+        <div class="">
+            <table class="table table-hover overflow: auto" style="height: 500px">
+                <thead>
+                <tr>
+                    <th style="width: 10%">Title</th>
+                    <th style="width: 20%">Rating</th>
+                    <th style="width: 40%">Review</th>
+                    <th style="width: 10%">Hotel Name</th>
+                    <th style="width: 10%">Id</th>
+                </tr>
+                </thead>
+                {% for object in reviews %}
+                    <tr>
+                        <td> {{ object['Title'] }} </td>
+                        {% if object['Score'] == 0 %}
+                            <td>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </td>
+                        {% endif %}
+                        {% if object['Score'] == "1" %}
+                            <td>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </td>
+                        {% endif %}
+                        {% if object['Score'] == "2" %}
+                            <td>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </td>
+                        {% endif %}
+                        {% if object['Score'] == "3" %}
+                            <td>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </td>
+                        {% endif %}
+                        {% if object['Score'] == "4" %}
+                            <td>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                            </td>
+                        {% endif %}
+                        {% if object['Score'] == "5" %}
+                            <td>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                            </td>
+                        {% endif %}
+                        <td> {{ object['review'] }} </td>
+                        <td> {{ object['Hotel'] }} </td>
+                        <td> {{ object['Id'] }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <script>
+            mapboxgl.accessToken = ' Your token here ';
+            var map = new mapboxgl.Map({
+                container: 'map2', // container id
+                style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                center: [{{hotel_long}}, {{ hotel_lat }}], // starting position [lng, lat]
+                zoom: 10 // starting zoom
+            });
+            var el = document.createElement('div');
+                el.className = 'marker';
+                el.style.backgroundImage =
+                    'url(https://www.flaticon.com/svg/static/icons/svg/608/608912.svg)';
+                el.style.width = '40px';
+                el.style.height = '40px';
+            var marker = new mapboxgl.Marker(el)
+                .setLngLat([{{hotel_long}}, {{ hotel_lat }}])
+                .setPopup(new mapboxgl.Popup().setHTML("<h5>{{ hotel_dict['Name'] }}</h5>"))
+                .addTo(map);
+            var marker2 = new mapboxgl.Marker()
+                .setLngLat([{{hospital_long}}, {{ hospital_lat }}])
+                .setPopup(new mapboxgl.Popup().setHTML("<h5>{{ given_hospital }}</h5>"))
+                .addTo(map);
+            marker2.color = "#b40219"
+        </script>
+    <div>
+        <h4>Covid-19 Data in {{ hotel_dict['State'] }} (from covidtracking.com real-time)</h4>
+        <p style="color: red"><strong style="color: black">Tested Positive: </strong> {{ coviddata['positive'] }}
+        </p>
+        <p style="color: red"><strong style="color: black">Tested Negative: </strong> {{ coviddata['negative'] }}
+        </p>
+        <p style="color: red"><strong style="color: black">Hospitalized
+            Currently: </strong> {{ coviddata['hospitalizedCurrently'] }}</p>
+        <p style="color: red"><strong style="color: black">in ICU
+            Currently: </strong> {{ coviddata['inIcuCurrently'] }}
+        </p>
+        <p style="color: red"><strong style="color: black">Death: </strong> {{ coviddata['death'] }}</p>
+        <p style="color: red"><strong style="color: black">Positive
+            Increase: </strong> {{ coviddata['positiveIncrease'] }}</p>
+        <p style="color: red"><strong style="color: black">Death
+            Increase: </strong> {{ coviddata['deathIncrease'] }}
+        </p>
+    </div>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+<div class="col-lg-10 col-lg-offset-1 vcenter">
+    <div id="curve_chart" style="height: 500px"></div>
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('number', 'Day');
+          data.addColumn('number', 'Hospitalized Currently');
+          data.addColumn('number', 'Positive Increase');
+          data.addColumn('number', 'Death Increase');
+          data.addRows([{%for i in range(0, data_size)%}
+            {{ test_data[i] }},
+            {% endfor %}
+            {{ test_data[data_size]}}]);
+        {##}
+        {#var data = google.visualization.arrayToDataTable([['Date',#}
+        {#    'Positive',#}
+        {#    'Hospitalized Currently',#}
+        {#    'Positive Increase',#}
+        {#    'Death Increase'],#}
+        {#    #}
+        {#]);#}
+          var options = {
+              chart: {
+                  title: 'Covid-19 Data in {{ hotel_dict["State"] }}',
+                  subtitle: 'from covidtracking.com current value'
+              },
+              title: 'Covid-19 Data in {{ hotel_dict["State"] }}',
+              curveType: 'function',
+              legend: {position: 'bottom'},
+              vAxis: {
+                  viewWindowMode: 'explicit',
+                  viewWindow: {
+                      min: 0
+                  }
+              }
+          };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+</body>
+</html>

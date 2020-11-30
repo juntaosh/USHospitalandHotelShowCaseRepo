@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hospital Recommendation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/getrating.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-default" color="clear">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">Hospital Recommendation</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="https://github.com/juntaosh/USHospitalandHotelShowCaseRepo" target="_blank">Github</a></li>
+                <li><a href="https://trello.com/b/0f4K5jkH/project" target="_blank">Trello</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">More
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://juntaosh.github.io/US-hospital-and-Hotel-Recommendation-System/"
+                               target="_blank">WebPage</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="col-lg-8 col-lg-offset-2 vcenter">
+    <br>
+    <br>
+    <h4 class='info_title'>Hotels near hospital</h4>
+    <br>
+    <br>
+    <form method='post'>
+        <div class="">
+                <table class="table table-hover overflow: auto" style="height: 500px">
+                    <thead>
+                    <tr>
+                        <th><a href="/get_hotels/sortByName">Name</a></th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th><a href="/get_hotels/sortByType">Type</a></th>
+                        <th><a href="/get_hotels/sortByDistance">Distance To Hospital(miles)</a></th>
+                        <th><a href="/get_hotels/sortByRating">Rating (out of 5) </a></th>
+                    </tr>
+                    </thead>
+                    {% for object in data %}
+                        <tr>
+                            <td> <a href='/hotel_detail/{{ object['Name'] }}'>
+                                {{ object['Name']}} </a></td>
+                            <td> {{ object['Address']}} </td>
+                            <td> {{ object['City']}} </td>
+                            <td> {{ object['State']}} </td>
+                            <td> {{ object['Type']}} </td>
+                            <td> {{ object['Distance']}} </td>
+                            <td> {{ object['Avg_rating'] }} </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+{#            <div class="w-responsive text-center p-3 mt-2" style="padding-bottom: 10rem; padding-top: 10rem">#}
+{#                <input hidden type="submit" class="btn btn-default"#}
+{#                       value= "Previous Page" style="width: 50%"/>#}
+{#                <br>#}
+{#                <br>#}
+{#                <input hidden type="submit" class="btn btn-default"#}
+{#                       value="Next Page" style="width: 50%"/>#}
+{#            </div>#}
+            </div>
+    </form>
+</div>
+{#<div class="col-lg-8 col-lg-offset-2 vcenter">#}
+{#        <div class="table-wrapper-scroll-y my-custom-scrollbar">#}
+{#            <table class="table table-hover" border=1>#}
+{#                <thead>#}
+{#                <tr>#}
+{#                    <th>Name</th>#}
+{#                    <th>Address</th>#}
+{#                    <th>City</th>#}
+{#                    <th>State</th>#}
+{#                    <th>Type</th>#}
+{#                    <th>Distance To Hospital(miles)</th>#}
+{#                    <th>Rating</th>#}
+{#                </tr>#}
+{#                </thead>#}
+{#                {% for object in data %}#}
+{#                    <tr>#}
+{#                        <td> {{ object[0]['Name']}} </td>#}
+{#                        <td> {{ object[0]['Address']}} </td>#}
+{#                        <td> {{ object[0]['City']}} </td>#}
+{#                        <td> {{ object[0]['State']}} </td>#}
+{#                        <td> {{ object[0]['Type']}} </td>#}
+{#                        <td> {{ object[1]}} </td>#}
+{#                        <td> {{ object[0]['Avg_rating']}} </td>#}
+{#                        {% for val in object[2:] %}#}
+{#                            <td> {{ val }} </td>#}
+{#                        {% endfor %}#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            </table>#}
+{#        </div>#}
+{#    </form>#}
+</div>
+</body>
+</html>

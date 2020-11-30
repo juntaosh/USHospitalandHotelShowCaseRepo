@@ -1,0 +1,52 @@
+.mapbox_container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    display: inline-block;
+    margin: 15%;
+    margin-top: 30px;
+    margin-bottom: 10px;
+
+}
+
+#info {
+    position: absolute;
+    left: 30%;
+    width: 60%;
+}
+
+.info_title {
+    margin-top: 0%;
+}
+
+.overall_ratings {
+    margin-left: 10px;
+}
+
+#map2 {
+    position: absolute;
+    height: 100%;
+    width: 25%;
+    display: block;
+}
+
+.contact {
+    margin: 1px;
+    margin-left: 10px;
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.ratings {
+    margin: 15%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

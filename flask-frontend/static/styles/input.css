@@ -1,0 +1,13 @@
+input {
+    font-size: 15px;
+    font-family: Arial;
+    width: 100%;
+}
+
+input[type=text] {
+    background-color: white;
+}
+
+input[type=submit] {
+    cursor: pointer;
+}

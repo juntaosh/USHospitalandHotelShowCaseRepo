@@ -1,0 +1,16 @@
+# datasets
+datasets/*
+
+# mac generated files
+**/.DS_Store
+
+# PyCharm generated files
+**/.idea/*
+**/venv/*
+**/__pycache__/*
+
+#PySpark
+**/spark-2.4.7-bin-hadoop2.7/*
+
+#Jupyter
+**/.ipynb_checkpoints/**

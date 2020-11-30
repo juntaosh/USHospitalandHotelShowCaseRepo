@@ -1,0 +1,258 @@
+<?php
+?>
+<html>
+<head>
+    <title>Hospital Recommendation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/getrating.css') }}">
+    <link rel="stylesheet" type="text/css" href={{ url_for('static',filename='styles/imagebanner.css') }}>
+</head>
+<body>
+<nav class="navbar navbar-default" color="clear">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">Hospital Recommendation</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="https://github.com/juntaosh/USHospitalandHotelShowCaseRepo" target="_blank">Github</a></li>
+                <li><a href="https://trello.com/b/0f4K5jkH/project" target="_blank">Trello</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">More
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://juntaosh.github.io/US-hospital-and-Hotel-Recommendation-System/"
+                               target="_blank">WebPage</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="hero-image"
+     style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ image }});">
+    <div class="hero-text">
+        <h2 class="text-center">{{ address[0][1] }}</h2>
+    </div>
+</div>
+    <div class="mapbox_container">
+        <div id='map2'></div>
+        <div id='info'>
+            <h4 class='info_title'>Overall Ratings</h4>
+            <div>
+                <p class='overall_ratings'><strong>{{overall_ratings_h[7]}}:</strong> {{overall_ratings[0][7]}} / 5</p>
+                <p class='overall_ratings'><strong>{{overall_ratings_h[1]}}:</strong> {{overall_ratings[0][1]}}</p>
+                <p class='overall_ratings'><strong>{{overall_ratings_h[2]}}:</strong> {{overall_ratings[0][2]}}</p>
+                <p class='overall_ratings'><strong>{{overall_ratings_h[3]}}:</strong> {{overall_ratings[0][3]}}</p>
+                <p class='overall_ratings'><strong>{{overall_ratings_h[4]}}:</strong> {{overall_ratings[0][4]}}</p>
+                <p class='overall_ratings'><strong>{{overall_ratings_h[5]}}:</strong> {{overall_ratings[0][5]}}</p>
+                <p class='overall_ratings'><strong>{{overall_ratings_h[6]}}:</strong> {{overall_ratings[0][6]}}</p>
+            </div>
+            <br>
+            <h4 class='info_title'>Contact</h4>
+            <div>
+                <p class='contact'> {{address[0][2]}} </p>
+                <p class='contact'> {{address[0][3]}}, {{address[0][4]}}  {{address[0][5]}} </p>
+                <p class='contact'> {{address[0][7]}} </p>
+            </div>
+            <br>
+            <a class="badge badge-info"  href='/get_hotels'>
+                Hotels near this hospital
+                <!-- <h4 class='info_title'>Hotels near this hospital</h4> -->
+            </a>
+        </div>        
+    </div>
+    <br><br><br><br><br>
+    <div class='ratings'>
+        <h3>General</h3>
+        <p>{{address_h[-2]}}: {{address[0][-2]}}</p>
+        <p>{{address_h[-1]}}: {{address[0][-1]}}</p>
+    <table class="table table-hover" border=1>
+        <thead>
+            <tr>
+                {% for header in general_comp_h[2:-1] %}
+                    <th>{{header}}</th>
+                    {% endfor %}
+                </tr>
+        </thead>
+        {% for item in general_comp%}
+        <tr>
+            {% for val in item[2:-1] %}
+            <td> {{val}} </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+      
+    <br>
+    <div class='ratings'>
+        <h3 >Healthcare Associated Infections</h3>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-hover" border=1>
+                <thead>
+                    <tr>
+                        {% for header in infections_h[1:] %}
+                            <th>{{header}}</th>
+                            {% endfor %}
+                        </tr>
+                </thead>
+                {% for item in infections%}
+                <tr>
+                    {% for val in item[1:] %}
+                    <td> {{val}} </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+    <br>
+    <div class='ratings'>
+        <h3>Timely and Effective Care</h3>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-hover" border=1>
+                <thead>
+                    <tr>
+                        {% for header in timely_care_h[1:] %}
+                            <th>{{header}}</th>
+                            {% endfor %}
+                        </tr>
+                </thead>
+                {% for item in timely_care%}
+                <tr>
+                    {% for val in item[1:] %}
+                    <td> {{val}} </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+    <br>
+    <div class='ratings'>
+        <h3>Complications and Deaths</h3> 
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-hover" border=1>
+                <thead>
+                    <tr>
+                        {% for header in complications_h[1:] %}
+                            <th>{{header}}</th>
+                            {% endfor %}
+                        </tr>
+                </thead>
+                {% for item in complications%}
+                <tr>
+                    {% for val in item[1:] %}
+                    <td> {{val}} </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <script>
+        var lng = {{address[0][-4]}};
+        var lat = {{address[0][-3]}};
+        console.log(lng, lat)
+        mapboxgl.accessToken = 'your token here';
+		  var map = new mapboxgl.Map({
+			  container: 'map2', // container id
+			  style: 'mapbox://styles/mapbox/streets-v11', // style URL
+			  center: [lng, lat], // starting position [lng, lat]
+			  zoom: 15 // starting zoom
+			  });
+              var el = document.createElement('div');
+                el.className = 'marker';
+                el.style.backgroundImage =
+                    'url(https://www.flaticon.com/svg/static/icons/svg/504/504276.svg)';
+                el.style.width = '40px';
+                el.style.height = '40px';
+		  var marker = new mapboxgl.Marker()
+			  .setLngLat([lng, lat])
+              .setPopup(new mapboxgl.Popup().setHTML("<h5>{{ address[0][1] }}</h5>"))
+			  .addTo(map);
+    </script>
+    <br><br>
+        <div class="col-lg-10 col-lg-offset-1 vcenter">
+            <h4>Covid-19 Data in {{address[0][4]}} (from covidtracking.com real-time)</h4>
+            <p style="color: red"><strong style="color: black">Tested Positive: </strong> {{ coviddata['positive'] }}
+            </p>
+            <p style="color: red"><strong style="color: black">Tested Negative: </strong> {{ coviddata['negative'] }}
+            </p>
+            <p style="color: red"><strong style="color: black">Hospitalized
+                Currently: </strong> {{ coviddata['hospitalizedCurrently'] }}</p>
+            <p style="color: red"><strong style="color: black">in ICU
+                Currently: </strong> {{ coviddata['inIcuCurrently'] }}
+            </p>
+            <p style="color: red"><strong style="color: black">Death: </strong> {{ coviddata['death'] }}</p>
+            <p style="color: red"><strong style="color: black">Positive
+                Increase: </strong> {{ coviddata['positiveIncrease'] }}</p>
+            <p style="color: red"><strong style="color: black">Death
+                Increase: </strong> {{ coviddata['deathIncrease'] }}
+            </p>
+        </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="col-lg-10 col-lg-offset-1 vcenter">
+        <div id="curve_chart" style="height: 500px"></div>
+    </div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+    
+          function drawChart() {
+              var data = new google.visualization.DataTable();
+              data.addColumn('number', 'Day');
+              data.addColumn('number', 'Hospitalized Currently');
+              data.addColumn('number', 'Positive Increase');
+              data.addColumn('number', 'Death Increase');
+              data.addRows([{%for i in range(0, data_size)%}
+                {{ test_data[i] }},
+                {% endfor %}
+                {{ test_data[data_size]}}]);
+            {##}
+            {#var data = google.visualization.arrayToDataTable([['Date',#}
+            {#    'Positive',#}
+            {#    'Hospitalized Currently',#}
+            {#    'Positive Increase',#}
+            {#    'Death Increase'],#}
+            {#    #}
+            {#]);#}
+              var options = {
+                  chart: {
+                      title: 'Covid-19 Data in {{address[0][4]}}',
+                      subtitle: 'from covidtracking.com current value'
+                  },
+                  title: 'Covid-19 Data in {{address[0][4]}}',
+                  curveType: 'function',
+                  legend: {position: 'bottom'},
+                  vAxis: {
+                      viewWindowMode: 'explicit',
+                      viewWindow: {
+                          min: 0
+                      }
+                  }
+              };
+    
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+    
+            chart.draw(data, options);
+          }
+        </script>
+</body>
+</html>
