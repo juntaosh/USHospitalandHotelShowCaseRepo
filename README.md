@@ -1,10 +1,10 @@
-# Keyword Driven Exploration of U.S. Hospitals, Hotels and Restaurants
+# Keyword Driven Exploration of U.S. Hospitals and Hotels
 
 [<img src="readme/viterbi_logo.png" width="200" height="50"/>](https://datascience.usc.edu/courses/) [<img src="readme/trello-mark-blue.png" width="50" height="50"/>](https://trello.com/b/0f4K5jkH/project)
 
 ## Project description
 
-The project aims to import four hospital datasets into SQL databases, one hotel review dataset and one restaurant review dataset into Firebase. A web interface will be developed for users to select the desired dataset, search based on user preferences, and explore with primary and foreign key relations.
+The project aims to import four hospital datasets into SQL databases and one hotel review dataset into Firebase. A web interface will be developed for users to select the desired dataset, search based on user preferences, and explore with primary and foreign key relations.
 
 ## Datasets
 The following datasets are provided by Centers for Medicare & Medicaid Services (CMS) and are accessible via Socrata Open Data API (SODA).
@@ -50,4 +50,8 @@ for users.
 
 Deadlines (Week of)     |Tasks|
 ------------------------|------------------|
-09/14 |Submit and present the project proposal.09/21 - 10/05 | Create a general web page with a search form. Complete data cleaning, integration, and aggregation.10/12|Submit midterm report.10/19 - 11/16|Integrates data into front-end with basic functionalities.11/23|Submit final project, and present demo to class
+09/14 |Submit and present the project proposal.
+09/21 - 10/05 | Create a general web page with a search form. Complete data cleaning, integration, and aggregation.
+10/12|Submit midterm report.
+10/19 - 11/16|Integrates data into front-end with basic functionalities.
+11/23|Submit final project, and present demo to class
